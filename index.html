@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="btnMinus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="qty" type="text" class="form-control text-center" value="1">
+                           <button id="btnPlus" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$<span id="price">20</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="btnMinus1" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="qty1" type="text" class="form-control text-center" value="1">
+                           <button id="btnPlus1" class="btn btn-default"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$<span id="price1">10</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax:</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$<span id="subTotal">30</span></h5>
+                        <h5>$<span id="tax">00</span></h5>
+                        <h5>$<span id="total">30</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <script>
+      const plusBtn = document.getElementById('btnPlus');
+      plusBtn.addEventListener('click', function () {
+         const qty = parseInt(getValues('qty').value);
+         updateValue('plus',qty);
+      })
+
+      const minusBtn = document.getElementById('btnMinus');
+      minusBtn.addEventListener('click', function () {
+         const qty = parseInt(getValues('qty').value);
+         updateValue('minus',qty);
+      })
+
+
+      const plusBtn1 = document.getElementById('btnPlus1');
+      plusBtn1.addEventListener('click', function () {
+         const qty1 = parseInt(getValues('qty1').value);
+         updateValue1('plus',qty1);
+      })
+
+      const minusBtn1 = document.getElementById('btnMinus1');
+      minusBtn1.addEventListener('click', function () {
+         const qty1 = parseInt(getValues('qty1').value);
+         updateValue1('minus',qty1);
+      })
+
+
+      function getValues(id){
+         const result = document.getElementById(id);
+         return result;
+      }
+
+      function updateValue(task,qty){
+         let newQty = 0;
+         if(task === 'plus')
+         {
+            newQty = qty + 1;
+         }
+         else{
+            newQty = qty - 1;
+         }
+         getValues('qty').value = newQty;
+         getValues('qty').innerText = newQty;
+         const rate = parseFloat(getValues('price').innerText);
+         if (qty === 1) {
+            sessionStorage.rate = rate;
+         }
+         const subTotalQty = sessionStorage.rate * newQty;
+         getValues('price').innerText = subTotalQty;
+         getTotal();
+      }
+
+      function updateValue1(task,qty1){
+         let newQty1 = 0;
+         if(task === 'plus')
+         {
+            newQty1 = qty1 + 1;
+         }
+         else{
+            newQty1 = qty1 - 1;
+         }
+         getValues('qty1').value = newQty1;
+         getValues('qty1').innerText = newQty1;
+         const rate1 = parseFloat(getValues('price1').innerText);
+         if (qty1 === 1) {
+            sessionStorage.rate1 = rate1;
+         }
+         const subTotalQty1 = sessionStorage.rate1 * newQty1;
+         getValues('price1').innerText = subTotalQty1;
+
+         getTotal();
+      }
+
+      function getTotal(){
+
+         const rate = parseFloat(getValues('price').innerText);
+         const rate1 = parseFloat(getValues('price1').innerText);
+
+
+         getValues('subTotal').innerText = rate+rate1;
+         getValues('total').innerText = rate+rate1;
+      }
+
+   </script>
+</body>
+
+</html>
