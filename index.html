@@ -82,63 +82,65 @@
       const plusBtn = document.getElementById('btnPlus');
       plusBtn.addEventListener('click', function () {
          const qty = parseInt(getValues('qty').value);
-         updateValue('plus',qty);
+         updateValue('plus', qty);
       })
 
       const minusBtn = document.getElementById('btnMinus');
       minusBtn.addEventListener('click', function () {
          const qty = parseInt(getValues('qty').value);
-         updateValue('minus',qty);
+         updateValue('minus', qty);
       })
 
 
       const plusBtn1 = document.getElementById('btnPlus1');
       plusBtn1.addEventListener('click', function () {
          const qty1 = parseInt(getValues('qty1').value);
-         updateValue1('plus',qty1);
+         updateValue1('plus', qty1);
       })
 
       const minusBtn1 = document.getElementById('btnMinus1');
       minusBtn1.addEventListener('click', function () {
          const qty1 = parseInt(getValues('qty1').value);
-         updateValue1('minus',qty1);
+         updateValue1('minus', qty1);
       })
 
 
-      function getValues(id){
+      function getValues(id) {
          const result = document.getElementById(id);
          return result;
       }
 
-      function updateValue(task,qty){
-         let newQty = 0;
-         if(task === 'plus')
-         {
-            newQty = qty + 1;
-         }
-         else{
-            newQty = qty - 1;
-         }
-         getValues('qty').value = newQty;
-         getValues('qty').innerText = newQty;
-         const rate = parseFloat(getValues('price').innerText);
-         if (qty === 1) {
-            sessionStorage.rate = rate;
-         }
-         const subTotalQty = sessionStorage.rate * newQty;
-         getValues('price').innerText = subTotalQty;
-         getTotal();
+      function updateValue(task, qty) {
+         
+            let newQty = 0;
+            if (task === 'plus' && qty>=1) {
+               newQty = qty + 1;
+            }
+            else if (task === 'minus' && qty>1) {
+               newQty = qty - 1;
+            }
+            else{return}
+            getValues('qty').value = newQty;
+            getValues('qty').innerText = newQty;
+            const rate = parseFloat(getValues('price').innerText);
+            if (qty === 1) {
+               sessionStorage.rate = rate;
+            }
+            const subTotalQty = sessionStorage.rate * newQty;
+            getValues('price').innerText = subTotalQty;
+            getTotal();
+         
       }
 
-      function updateValue1(task,qty1){
+      function updateValue1(task, qty1) {
          let newQty1 = 0;
-         if(task === 'plus')
-         {
-            newQty1 = qty1 + 1;
-         }
-         else{
-            newQty1 = qty1 - 1;
-         }
+         if (task === 'plus' && qty1>=1) {
+               newQty1 = qty1 + 1;
+            }
+            else if (task === 'minus' && qty1>1) {
+               newQty1 = qty1 - 1;
+            }
+            else{return}
          getValues('qty1').value = newQty1;
          getValues('qty1').innerText = newQty1;
          const rate1 = parseFloat(getValues('price1').innerText);
@@ -151,14 +153,14 @@
          getTotal();
       }
 
-      function getTotal(){
+      function getTotal() {
 
          const rate = parseFloat(getValues('price').innerText);
          const rate1 = parseFloat(getValues('price1').innerText);
 
 
-         getValues('subTotal').innerText = rate+rate1;
-         getValues('total').innerText = rate+rate1;
+         getValues('subTotal').innerText = rate + rate1;
+         getValues('total').innerText = rate + rate1;
       }
 
    </script>
