@@ -25,11 +25,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button id="btnMinus" class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input id="qty" type="text" class="form-control text-center" value="1">
-                           <button id="btnPlus" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button onclick=" calculation('phone',false);" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="phone-count" type="text" class="form-control text-center" value="1" onkeypress="if (event.keyCode === 13) {calculation('phone',null)}" >
+                           <button onclick=" calculation('phone',true);" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$<span id="price">20</span></h5>
+                        <h5 id="phone-total">$1219</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +43,11 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button id="btnMinus1" class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input id="qty1" type="text" class="form-control text-center" value="1">
-                           <button id="btnPlus1" class="btn btn-default"><i class="fas fa-plus"></i></button>
-
+                           <button  onclick="calculation('case',false);" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                        <input id="case-count" type="text" class="form-control text-center" value="1">
+                           <button  onclick="calculation('case',true);" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$<span id="price1">10</span></h5>
+                        <h5 id="case-total">$59</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -56,17 +55,15 @@
 
                <div class="cart-item">
                   <div class="row">
-
                      <div class="col-md-8">
                         <h5>Subtotal: </h5>
                         <h5>Tax:</h5>
                         <h5>Total:</h5>
                      </div>
-
                      <div class="col-md-4 status">
-                        <h5>$<span id="subTotal">30</span></h5>
-                        <h5>$<span id="tax">00</span></h5>
-                        <h5>$<span id="total">30</span></h5>
+                        <h5 id="sub-total">$1,278</h5>
+                        <h5 id="tax-total">$0</h5>
+                        <h5 id="grand-total">$1,278</h5>
                      </div>
                   </div>
                </div>
@@ -77,93 +74,57 @@
          </div>
       </div>
    </section>
-
-   <script>
-      const plusBtn = document.getElementById('btnPlus');
-      plusBtn.addEventListener('click', function () {
-         const qty = parseInt(getValues('qty').value);
-         updateValue('plus', qty);
-      })
-
-      const minusBtn = document.getElementById('btnMinus');
-      minusBtn.addEventListener('click', function () {
-         const qty = parseInt(getValues('qty').value);
-         updateValue('minus', qty);
-      })
-
-
-      const plusBtn1 = document.getElementById('btnPlus1');
-      plusBtn1.addEventListener('click', function () {
-         const qty1 = parseInt(getValues('qty1').value);
-         updateValue1('plus', qty1);
-      })
-
-      const minusBtn1 = document.getElementById('btnMinus1');
-      minusBtn1.addEventListener('click', function () {
-         const qty1 = parseInt(getValues('qty1').value);
-         updateValue1('minus', qty1);
-      })
-
-
-      function getValues(id) {
-         const result = document.getElementById(id);
-         return result;
-      }
-
-      function updateValue(task, qty) {
-         
-            let newQty = 0;
-            if (task === 'plus' && qty>=1) {
-               newQty = qty + 1;
-            }
-            else if (task === 'minus' && qty>1) {
-               newQty = qty - 1;
-            }
-            else{return}
-            getValues('qty').value = newQty;
-            getValues('qty').innerText = newQty;
-            const rate = parseFloat(getValues('price').innerText);
-            if (qty === 1) {
-               sessionStorage.rate = rate;
-            }
-            const subTotalQty = sessionStorage.rate * newQty;
-            getValues('price').innerText = subTotalQty;
-            getTotal();
-         
-      }
-
-      function updateValue1(task, qty1) {
-         let newQty1 = 0;
-         if (task === 'plus' && qty1>=1) {
-               newQty1 = qty1 + 1;
-            }
-            else if (task === 'minus' && qty1>1) {
-               newQty1 = qty1 - 1;
-            }
-            else{return}
-         getValues('qty1').value = newQty1;
-         getValues('qty1').innerText = newQty1;
-         const rate1 = parseFloat(getValues('price1').innerText);
-         if (qty1 === 1) {
-            sessionStorage.rate1 = rate1;
-         }
-         const subTotalQty1 = sessionStorage.rate1 * newQty1;
-         getValues('price1').innerText = subTotalQty1;
-
-         getTotal();
-      }
-
-      function getTotal() {
-
-         const rate = parseFloat(getValues('price').innerText);
-         const rate1 = parseFloat(getValues('price1').innerText);
-
-
-         getValues('subTotal').innerText = rate + rate1;
-         getValues('total').innerText = rate + rate1;
-      }
-
-   </script>
 </body>
+
+<script>
+   // document.getElementById('phone-increase').addEventListener('click', function(){
+
+   //    calculation(true);
+   // })
+
+   function calculation(product,isIncrease){
+      const productInput = document.getElementById(product + '-count');
+      const productCount = parseInt(productInput.value);
+      let newProductCount = productCount;
+
+      if(isIncrease)
+         newProductCount = productCount + 1;
+      else if(isIncrease == false && productCount > 1)
+      newProductCount = productCount - 1;
+      else
+      newProductCount = productCount;
+
+      productInput.value = newProductCount;
+      let total = 0;
+      if(product == 'phone')
+      total = newProductCount * 1219;
+      else if(product == 'case')
+      total = newProductCount * 59;
+      document.getElementById(product + '-total').innerText = '$' + total;
+      calculateTaxnTotal();
+   }
+
+   function calculateTaxnTotal(){
+      const phoneCount = getInputValue('phone');
+      const caseCount = getInputValue('case');
+
+      const subTotal = (phoneCount * 1219) + (caseCount * 59);
+      document.getElementById('sub-total').innerText = '$' + subTotal;
+
+      const taxAmt = Math.round(subTotal * 0.1);
+      document.getElementById('tax-total').innerText = '$' + taxAmt;
+
+      const grandTotal = subTotal + taxAmt;
+      document.getElementById('grand-total').innerText = '$' + grandTotal;
+   }
+
+   function getInputValue(product){
+      const productInput = document.getElementById(product + '-count');
+      const productCount = parseInt(productInput.value);
+      return productCount;
+   }
+
+
+</script>
 
 </html>
